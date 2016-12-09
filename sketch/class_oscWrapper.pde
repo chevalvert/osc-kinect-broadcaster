@@ -18,11 +18,10 @@ public class OSCWrapper {
     OscBundle bundle = new OscBundle();
     OscMessage message = new OscMessage("/blob");
 
-    println("blob.x: "+ blob.position.x);
-
     message.add(blob.id);
     message.add(blob.position.x);
     message.add(blob.position.y);
+    message.add(blob.position.z);
     message.add(blob.size.x);
     message.add(blob.size.y);
 

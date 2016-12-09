@@ -21,11 +21,9 @@ public class Blob {
 
 		this.position = this.computePosition();
 		this.p_position = this.position;
-		// this.p_position = new PVector(0,0);
 
 		this.size = this.computeSize();
 		this.p_size = this.size;
-		// this.p_size = new PVector(0,0);
 	}
 
 
@@ -73,7 +71,7 @@ public class Blob {
 	// -------------------------------------------------------------------------
 	public PVector computePosition() {
 		Rectangle r = this.getBoundingBox();
-		return new PVector( r.x + r.width*.5, r.y + r.height*.5 );
+		return new PVector( r.x + r.width * 0.5, r.y + r.height * 0.5, 0);
 	}
 
 	public PVector computeSize() {
