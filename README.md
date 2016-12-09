@@ -78,5 +78,4 @@ public void oscEvent(OscMessage message) {
 
 ## License
 
-
-[]: 
+[MIT](https://tldrlegal.com/license/mit-license).
