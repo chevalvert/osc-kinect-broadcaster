@@ -77,7 +77,7 @@ public class BlobDetector {
   private void detectBlobs() {
     // Contours detected in this frame
     // Passing 'true' sorts them by descending area.
-    contours = opencv.findContours(true, true);
+    contours = opencv.findContours(false, false);
     newBlobContours = getBlobsFromContours(contours);
 
     // Check if the detected blobs already exist are new or some has disappeared.

@@ -19,11 +19,11 @@ public class OSCWrapper {
     OscMessage message = new OscMessage("/blob");
 
     message.add(blob.id);
-    message.add(blob.position.x);
-    message.add(blob.position.y);
+    message.add(int(blob.position.x));
+    message.add(int(blob.position.y));
     message.add(blob.position.z);
-    message.add(blob.size.x);
-    message.add(blob.size.y);
+    message.add(int(blob.size.x));
+    message.add(int(blob.size.y));
 
     bundle.add(message);
     bundle.setTimetag(bundle.now() + 10000);

@@ -5,6 +5,8 @@ public class Input {
 	private PApplet parent;
 
 	private Kinect kinect;
+  private int[] rawDepth;
+
 	private boolean isKinect = false;
 	private boolean isWebcam = false;
 	private float kinect_angle;
@@ -60,18 +62,14 @@ public class Input {
 	private PImage update_kinect(boolean forceUpdate) {
 		if (forceUpdate) this.img.pixels = new int[this.img.pixels.length];
 
-		int[] rawDepth = this.kinect.getRawDepth();
-
-		PImage depth = this.kinect.getDepthImage();
-		depth.loadPixels();
-
+		this.rawDepth = this.kinect.getRawDepth();
 		Rectangle clip = this.getAbsoluteClip();
 
-		for (int x = constrain(clip.x, 0, depth.width); x < constrain(clip.width, x, depth.width); x++) {
-			for (int y = constrain(clip.y, 0, depth.height); y < constrain(clip.height, y, depth.height); y++) {
-				int index = x + y*depth.width;
+		for (int x = constrain(clip.x, 0, this.kinect.width); x < constrain(clip.width, x, this.kinect.width); x++) {
+			for (int y = constrain(clip.y, 0, this.kinect.height); y < constrain(clip.height, y, this.kinect.height); y++) {
+				int index = x + y*this.kinect.width;
 
-				if (rawDepth[index] >= this.depthThreshold[0] && rawDepth[index] <= this.depthThreshold[1]) {
+				if (this.rawDepth[index] >= this.depthThreshold[0] && this.rawDepth[index] <= this.depthThreshold[1]) {
 					if (this.SMOOTH_FRAME) {
 						this.img.pixels[index] = lerpColor(this.pimg.pixels[index], this.kinect.getDepthImage().pixels[index], .5);
 					}else this.img.pixels[index] = this.kinect.getDepthImage().pixels[index];
@@ -114,6 +112,39 @@ public class Input {
 			max(c.y, c.y + c.height)
 		);
 	}
+
+  // -------------------------------------------------------------------------
+
+   public float getAvgZ(Rectangle r) {
+    if (this.isKinect && this.rawDepth != null && this.rawDepth.length > 0) {
+      int count = 0;
+      float sum = 0;
+      for (int x = r.x; x < r.x + r.width; x++) {
+        for (int y = r.y; y < r.y + r.height; y++) {
+          int index = x + y * this.kinect.width;
+          sum += this.rawDepth[index];
+          count++;
+        }
+      }
+      return sum / count;
+    } else return -1;
+  }
+
+  public float getMinZ(Rectangle r) {
+    if (this.isKinect && this.rawDepth != null && this.rawDepth.length > 0) {
+      float record = this.depthThreshold[1];
+      for (int x = r.x; x < r.x + r.width; x++) {
+        for (int y = r.y; y < r.y + r.height; y++) {
+          int index = x + y * this.kinect.width;
+          float z = this.rawDepth[index];
+          if (z >= this.depthThreshold[0] && z <= this.depthThreshold[1]) {
+            if (z < record) record = z;
+          }
+        }
+      }
+      return norm(record, this.depthThreshold[0], this.depthThreshold[1]);
+    } else return -1;
+  }
 
 
 	// -------------------------------------------------------------------------

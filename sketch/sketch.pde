@@ -51,7 +51,6 @@ public color
 
 void setup() {
   size(1090, 500);
-  frameRate(15);
 
   initControls(0, 0);
 
@@ -80,10 +79,6 @@ void draw() {
   switch (visibleSnapshot) {
     case 0 :
     frame_name = " — [input]";
-    image(INPUT.getRawDepthImage(), 0, 0);
-    noStroke();
-    fill(0, 255*.3);
-    rect(0, 0, 640, 480);
     image(INPUT.getClippedDepthImage(), INPUT.getAbsoluteClip().x, INPUT.getAbsoluteClip().y);
     INPUT.drawClip();
     break;

@@ -45,10 +45,13 @@ public class Blob {
 		strokeWeight(4);
 		line(this.p_position.x, this.p_position.y, this.position.x, this.position.y);
 
-		if(id>=0){
+		if (id >= 0) {
 			fill(255);
 			textSize(14);
-			text(""+id +" ("+this.id+")", r.x+6, r.y+18);
+      text(
+           int(this.position.x) + " ; " + int(this.position.y)
+           + " ("+ round(this.position.z * 100) / 100.0f + ")",
+           r.x+6, r.y+18);
 		}
 	}
 
@@ -71,7 +74,8 @@ public class Blob {
 	// -------------------------------------------------------------------------
 	public PVector computePosition() {
 		Rectangle r = this.getBoundingBox();
-		return new PVector( r.x + r.width * 0.5, r.y + r.height * 0.5, 0);
+    float z = INPUT.getMinZ(r);
+		return new PVector(r.x + r.width * 0.5, r.y + r.height * 0.5, z);
 	}
 
 	public PVector computeSize() {
